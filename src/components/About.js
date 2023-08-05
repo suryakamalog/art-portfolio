@@ -1,7 +1,9 @@
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import dummyImage from "../images/dummy.jpg";
+import { useMediaQuery } from "@mui/material";
 const About = () => {
+  const matches = useMediaQuery('(max-width:600px)');
   return (
     <>
       <div style={{ minHeight: "90vh", width: "100%"}} className="align-items-center row">
@@ -22,7 +24,7 @@ const About = () => {
               justifyContent: "center",
             }}
           >
-            <img src={dummyImage} style={{ height: "550px"}} />
+            <img src={dummyImage} style={{ height: matches ? "350px" : "550px" }} />
           </div>
           <div
             className="col-md-6"

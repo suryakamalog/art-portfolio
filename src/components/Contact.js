@@ -1,8 +1,9 @@
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import dummyImage from "../images/dummy.jpg";
-import { TextField } from "@mui/material";
+import { TextField, useMediaQuery } from "@mui/material";
 const Conatct = () => {
+  const matches = useMediaQuery('(max-width:600px)');
   return (
     <>
       <div style={{ minHeight: "90vh", width: "100%"}} className="align-items-center row">
@@ -10,9 +11,9 @@ const Conatct = () => {
           className="col-md-12"
           style={{
             display: "flex",
-            // flexWrap: "wrap",
-            // alignItems: "center",
-            // justifyContent: "center",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <div
@@ -23,7 +24,7 @@ const Conatct = () => {
               justifyContent: "center",
             }}
           >
-            <img src={dummyImage} style={{ height: "550px" }} />
+            <img src={dummyImage} style={{ height: matches ? "350px" : "550px" }} />
           </div>
           <div className="col-md-6" style={{
                 display: "flex",

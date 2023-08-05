@@ -7,6 +7,7 @@ import {
   Modal,
   Stack,
   IconButton,
+  useMediaQuery
 } from "@mui/material";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -102,6 +103,8 @@ const ImageGallery = ({ pageType }) => {
     if (imageIndex === 0) setImageIndex(imageUrlsLength - 1);
     else setImageIndex(imageIndex - 1);
   };
+  const matches = useMediaQuery('(max-width:600px)');
+
   return (
     <>
       <Box
@@ -109,15 +112,16 @@ const ImageGallery = ({ pageType }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginLeft: 20,
-          marginRight: 20,
+          marginLeft: 10,
+          marginRight: 10,
         }}
       >
         {pageType === "painting" ? (
-          <ImageList variant="masonry" cols={4} gap={10}>
+          <ImageList variant="masonry" cols={matches ? 1 : 4 } gap={10}>
             {paintingUrls.map((item, index) => (
               <ImageListItem key={index} sx={{ cursor: "pointer" }}>
                 <img
+                  
                   // src={`${item.img}?w=248&fit=crop&auto=format`}
                   src={`${item}`}
                   // srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
@@ -129,7 +133,7 @@ const ImageGallery = ({ pageType }) => {
             ))}
           </ImageList>
         ) : (
-          <ImageList variant="masonry" cols={4} gap={10}>
+          <ImageList variant="masonry" cols={matches ? 1 : 4 } gap={10}>
             {photographyUrls.map((item, index) => (
               <ImageListItem key={index} sx={{ cursor: "pointer" }}>
                 <img
