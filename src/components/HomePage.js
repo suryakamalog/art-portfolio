@@ -4,7 +4,7 @@ const HomePage = () => {
   return (
     <>
       <Title />
-      <ImageGallery />
+      <ImageGallery pageType={"painting"}/>
     </>
   );
 };

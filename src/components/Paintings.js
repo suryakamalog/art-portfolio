@@ -15,7 +15,7 @@ const Paintings = () => {
       >
         Art
       </Typography>
-      <ImageGallery />
+      <ImageGallery pageType={"painting"}/>
     </>
   );
 };

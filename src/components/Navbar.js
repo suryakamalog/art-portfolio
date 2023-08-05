@@ -1,17 +1,15 @@
-import InstagramIcon from '@mui/icons-material/Instagram';
-import { IconButton } from '@mui/material';
+import InstagramIcon from "@mui/icons-material/Instagram";
+import { IconButton } from "@mui/material";
 
 import { NavLink } from "react-router-dom";
 const Navbar = () => {
-
   const instagramLogoStyle = {
-    right: "50px"
-  }
+    right: "50px",
+  };
 
   return (
     <nav className="navbar navbar-expand-lg ">
       <div className="container-fluid">
-        
         <button
           className="navbar-toggler"
           type="button"
@@ -23,10 +21,13 @@ const Navbar = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <div
+          className="collapse navbar-collapse justify-content-center"
+          id="navbarNav"
+        >
           <ul className="navbar-nav fs-5">
             <li className="nav-item ">
-            <NavLink
+              <NavLink
                 to="/homepage"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
@@ -38,7 +39,7 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-            <NavLink
+              <NavLink
                 to="/paintings"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
@@ -50,7 +51,7 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-            <NavLink
+              <NavLink
                 to="/photography"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
@@ -62,7 +63,7 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-            <NavLink
+              <NavLink
                 to="/about"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
@@ -74,7 +75,7 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-            <NavLink
+              <NavLink
                 to="/contact"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
@@ -84,14 +85,16 @@ const Navbar = () => {
               >
                 Contact
               </NavLink>
-                
-                
             </li>
           </ul>
-          
         </div>
         <div>
-        <IconButton sx={instagramLogoStyle} onClick={() => window.open('https://www.instagram.com/utpal.ogs/')}><InstagramIcon /></IconButton>
+          <IconButton
+            sx={instagramLogoStyle}
+            onClick={() => window.open("https://www.instagram.com/utpal.ogs/")}
+          >
+            <InstagramIcon />
+          </IconButton>
         </div>
       </div>
     </nav>
