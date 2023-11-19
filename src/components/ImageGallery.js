@@ -51,6 +51,8 @@ const prevArrowStyles = {
 const ImageGallery = ({ pageType }) => {
   const [paintingUrls, setPaintingUrls] = useState([]);
   const paintingListRef = ref(storage, "images/painting/");
+  const [potraitUrls, setPotraitUrls] = useState([]);
+  const potraitListRef = ref(storage, "images/potrait/");
   const [photographyUrls, setphotographyUrls] = useState([]);
   const photographyListRef = ref(storage, "images/photography/");
 
@@ -63,7 +65,17 @@ const ImageGallery = ({ pageType }) => {
           });
         });
       });
-    } else {
+    } else if(pageType === "potrait") {
+      listAll(potraitListRef).then((response) => {
+        response.items.forEach((item) => {
+          getDownloadURL(item).then((url) => {
+            setPotraitUrls((prev) => [...prev, url]);
+          });
+        });
+      });
+    }
+    
+    else {
       listAll(photographyListRef).then((response) => {
         response.items.forEach((item) => {
           getDownloadURL(item).then((url) => {
@@ -85,7 +97,10 @@ const ImageGallery = ({ pageType }) => {
   const nextImage = () => {
     if (pageType === "painting") {
       imageUrlsLength = paintingUrls.length;
-    } else {
+    } else if(pageType === "potrait"){
+      imageUrlsLength = potraitUrls.length;
+    }
+    else {
       imageUrlsLength = photographyUrls.length;
     }
     console.log(imageIndex);
@@ -97,7 +112,10 @@ const ImageGallery = ({ pageType }) => {
   const prevImage = () => {
     if (pageType === "painting") {
       imageUrlsLength = paintingUrls.length;
-    } else {
+    } else if (pageType === "potrait") {
+      imageUrlsLength = potraitUrls.length;
+    }
+     else {
       imageUrlsLength = photographyUrls.length;
     }
     if (imageIndex === 0) setImageIndex(imageUrlsLength - 1);
@@ -122,6 +140,21 @@ const ImageGallery = ({ pageType }) => {
               <ImageListItem key={index} sx={{ cursor: "pointer" }}>
                 <img
                   
+                  // src={`${item.img}?w=248&fit=crop&auto=format`}
+                  src={`${item}`}
+                  // srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                  // alt={item.title}
+                  loading="lazy"
+                  onClick={() => handleOpen(index)}
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        ) : pageType === "potrait" ? (
+          <ImageList variant="masonry" cols={matches ? 1 : 4 } gap={10}>
+            {potraitUrls.map((item, index) => (
+              <ImageListItem key={index} sx={{ cursor: "pointer" }}>
+                <img
                   // src={`${item.img}?w=248&fit=crop&auto=format`}
                   src={`${item}`}
                   // srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
@@ -159,6 +192,8 @@ const ImageGallery = ({ pageType }) => {
           <Box sx={style}>
             {pageType === "painting" ? (
               <img src={`${paintingUrls[imageIndex]}`} height="600" />
+            ) : pageType === "potrait" ? (
+              <img src={`${potraitUrls[imageIndex]}`} height="600" />
             ) : (
               <img src={`${photographyUrls[imageIndex]}`} height="600" />
             )}

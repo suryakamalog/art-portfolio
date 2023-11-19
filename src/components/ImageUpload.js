@@ -14,6 +14,9 @@ import { v4 } from "uuid";
 import Resizer from "react-image-file-resizer";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, IconButton } from "@mui/material";
+import Compressor from 'compressorjs';
+
+
 const resizeFile = (file) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
@@ -35,9 +38,11 @@ const ImageUpload = () => {
   const [imageType, setImageType] = useState("painting");
   const [paintingUrls, setPaintingUrls] = useState([]);
   const [photographyUrls, setPhotographyUrls] = useState([]);
+  const [potraitUrls, setPotraitUrls] = useState([]);
 
   const paintingListRef = ref(storage, "images/painting");
   const photographyListRef = ref(storage, "images/photography");
+  const potraitListRef = ref(storage, "images/potrait");
   useEffect(() => {
     listAll(paintingListRef).then((response) => {
       response.items.forEach((item) => {
@@ -50,6 +55,13 @@ const ImageUpload = () => {
       response.items.forEach((item) => {
         getDownloadURL(item).then((url) => {
           setPhotographyUrls((prev) => [...prev, url]);
+        });
+      });
+    });
+    listAll(potraitListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setPotraitUrls((prev) => [...prev, url]);
         });
       });
     });
@@ -68,7 +80,20 @@ const ImageUpload = () => {
           setPaintingUrls((prev) => [...prev, url]);
         });
       });
-    } else {
+    } else if(imageType === "potrait") {
+      console.log("uploading potrait image");
+      if (imageUpload === null) return;
+      const imageRef = ref(
+        storage,
+        `images/potrait/${v4() + imageUpload.name}`
+      );
+      uploadBytes(imageRef, imageUpload).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setPotraitUrls((prev) => [...prev, url]);
+        });
+      });
+    }
+    else {
       console.log("uploading photography image");
       if (imageUpload === null) return;
       const imageRef = ref(
@@ -108,7 +133,12 @@ const ImageUpload = () => {
       .then(() => {
         if (imageType === "painting") {
           setPaintingUrls(paintingUrls.filter((item) => item !== imageURL));
-        } else {
+        } else if(imageType === "painting") {
+          setPhotographyUrls(
+            potraitUrls.filter((item) => item !== imageURL)
+          );
+        }
+        else {
           setPhotographyUrls(
             photographyUrls.filter((item) => item !== imageURL)
           );
@@ -118,6 +148,17 @@ const ImageUpload = () => {
       .catch((error) => {
         console.log("Error occurred while deleting");
       });
+  };
+
+  const compressImage = (image) => {
+    new Compressor(image, {
+      quality: 0.7, // 0.6 can also be used, but its not recommended to go below.
+      success: (compressedResult) => {
+        // compressedResult has the compressed file.
+        // Use the compressed file to upload the images to your server.        
+        setImageUpload(compressedResult)
+      },
+    });
   };
 
   return (
@@ -166,9 +207,10 @@ const ImageUpload = () => {
                 try {
                   const file = event.target.files[0];
                   const image = await resizeFile(file);
+                  compressImage(image)
                   // console.log(file)
                   // console.log(image);
-                  setImageUpload(image);
+                  // setImageUpload(compressedImage);
                 } catch (err) {
                   console.log(err);
                 }
@@ -179,6 +221,7 @@ const ImageUpload = () => {
                 Image Type
                 <select value={imageType} onChange={handleChange}>
                   <option value="painting">Painting</option>
+                  <option value="potrait">Potrait</option>
                   <option value="photography">Photography</option>
                 </select>
               </label>
@@ -245,6 +288,34 @@ const ImageUpload = () => {
                 <IconButton
                   sx={{ position: "absolute", bottom: 0, left: 0 }}
                   onClick={() => deleteImageHandler(url, "photography")}
+                >
+                  <DeleteIcon sx={{ color: "maroon", opacity: "70%" }} />
+                </IconButton>
+              </>
+            </div>
+          );
+        })}
+      </div>
+      <Typography
+        variant="h3"
+        component="h2"
+        style={{
+          textAlign: "center",
+          margin: 30,
+          fontFamily: "BlinkMacSystemFont",
+        }}
+      >
+        Potrait
+      </Typography>
+      <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+        {potraitUrls.map((url, index) => {
+          return (
+            <div style={{ position: "relative", margin: 10 }} key={index}>
+              <>
+                <img style={{ display: "block" }} src={url} height={100} />
+                <IconButton
+                  sx={{ position: "absolute", bottom: 0, left: 0 }}
+                  onClick={() => deleteImageHandler(url, "potrait")}
                 >
                   <DeleteIcon sx={{ color: "maroon", opacity: "70%" }} />
                 </IconButton>

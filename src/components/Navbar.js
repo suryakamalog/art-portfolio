@@ -52,6 +52,18 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <NavLink
+                to="/potraits"
+                className={({ isActive }) =>
+                  isActive ? "nav-link active" : "nav-link"
+                }
+                aria-current="page"
+                end
+              >
+                Potraits
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
                 to="/photography"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"

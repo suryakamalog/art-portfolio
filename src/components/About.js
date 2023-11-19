@@ -44,23 +44,10 @@ const About = () => {
               
               textAlign="center"
             >
-              Hello, I am Adam Halls. A textile artist and painter based on
-              Bodmin Moor, Cornwall. My work is carefully built up of layers of
-              fabric and paint which are brought together with many different
-              stitching techniques.
+              Discover Utpal Abhishek, a versatile creator skilled in sketching, 
+              oil painting, and diverse artistic forms, capturing emotions uniquely.
             </Typography>
-            <Typography
-              variant="h4"
-              margin={5}
-              marginRight={10}
-              fontSize={25}
-              textAlign="center"
-            >
-              I am inspired by the intricate details of algae, Lichens, rust and
-              weathered surfaces. My pieces are incredibly complex, working on
-              layers and welding them together on the sewing machine over many
-              weeks.
-            </Typography>
+            
 
             <Button
               variant="contained"
