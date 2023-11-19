@@ -34,7 +34,7 @@ const resizeFile = (file) =>
   });
 
 const ImageUpload = () => {
-  const [imageUpload, setImageUpload] = useState(null);
+  const [imageUpload, setImageUpload] = useState([]);
   const [imageType, setImageType] = useState("painting");
   const [paintingUrls, setPaintingUrls] = useState([]);
   const [photographyUrls, setPhotographyUrls] = useState([]);
@@ -67,46 +67,61 @@ const ImageUpload = () => {
     });
   }, []);
 
-  const uploadFile = () => {
+  const uploadFiles = () => {
     if (imageType === "painting") {
-      console.log("uploading painting image");
-      if (imageUpload === null) return;
-      const imageRef = ref(
-        storage,
-        `images/painting/${v4() + imageUpload.name}`
-      );
-      uploadBytes(imageRef, imageUpload).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          setPaintingUrls((prev) => [...prev, url]);
-        });
+      console.log("uploading painting images");
+      console.log(imageUpload.length)
+      if (!imageUpload || imageUpload.length === 0) return;
+
+      const uploadTasks = imageUpload.map((file) => {
+        const imageRef = ref(storage, `images/painting/${v4() + file.name}`);
+        return uploadBytes(imageRef, file).then((snapshot) => getDownloadURL(snapshot.ref));
       });
-    } else if(imageType === "potrait") {
-      console.log("uploading potrait image");
-      if (imageUpload === null) return;
-      const imageRef = ref(
-        storage,
-        `images/potrait/${v4() + imageUpload.name}`
-      );
-      uploadBytes(imageRef, imageUpload).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          setPotraitUrls((prev) => [...prev, url]);
+  
+      Promise.all(uploadTasks)
+        .then((urls) => {
+          setPaintingUrls((prev) => [...prev, ...urls]);
+        })
+        .catch((error) => {
+          console.error("Error uploading images: ", error);
         });
+    } else if (imageType === "potrait") {
+      console.log("uploading portrait images");
+      console.log(imageUpload.length)
+      if (!imageUpload || imageUpload.length === 0) return;
+
+      const uploadTasks = imageUpload.map((file) => {
+        const imageRef = ref(storage, `images/potrait/${v4() + file.name}`);
+        return uploadBytes(imageRef, file).then((snapshot) => getDownloadURL(snapshot.ref));
       });
-    }
-    else {
-      console.log("uploading photography image");
-      if (imageUpload === null) return;
-      const imageRef = ref(
-        storage,
-        `images/photography/${v4() + imageUpload.name}`
-      );
-      uploadBytes(imageRef, imageUpload).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          setPhotographyUrls((prev) => [...prev, url]);
+  
+      Promise.all(uploadTasks)
+        .then((urls) => {
+          setPotraitUrls((prev) => [...prev, ...urls]);
+        })
+        .catch((error) => {
+          console.error("Error uploading images: ", error);
         });
+    } else {
+      console.log("uploading photography images");
+      console.log(imageUpload.length)
+      if (!imageUpload || imageUpload.length === 0) return;
+
+      const uploadTasks = imageUpload.map((file) => {
+        const imageRef = ref(storage, `images/photography/${v4() + file.name}`);
+        return uploadBytes(imageRef, file).then((snapshot) => getDownloadURL(snapshot.ref));
       });
+  
+      Promise.all(uploadTasks)
+        .then((urls) => {
+          setPhotographyUrls((prev) => [...prev, ...urls]);
+        })
+        .catch((error) => {
+          console.error("Error uploading images: ", error);
+        });
     }
   };
+  
 
   const handleChange = (event) => {
     console.log(event.target.value);
@@ -133,7 +148,7 @@ const ImageUpload = () => {
       .then(() => {
         if (imageType === "painting") {
           setPaintingUrls(paintingUrls.filter((item) => item !== imageURL));
-        } else if(imageType === "painting") {
+        } else if(imageType === "photography") {
           setPhotographyUrls(
             potraitUrls.filter((item) => item !== imageURL)
           );
@@ -150,24 +165,54 @@ const ImageUpload = () => {
       });
   };
 
-  const compressImage = (image) => {
-    new Compressor(image, {
-      quality: 0.7, // 0.6 can also be used, but its not recommended to go below.
-      success: (compressedResult) => {
-        // compressedResult has the compressed file.
-        // Use the compressed file to upload the images to your server.        
-        setImageUpload(compressedResult)
-      },
+  const processImages = async (files) => {
+    const resizedAndCompressedPromises = Array.from(files).map(async (file) => {
+      const resizedFile = await resizeFile(file);
+      const compressedFile = await compressImage(resizedFile);
+      return compressedFile;
     });
+
+    return Promise.all(resizedAndCompressedPromises);
   };
+
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        1500,
+        1500,
+        'JPEG',
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        'file'
+      );
+    });
+
+  const compressImage = (file) =>
+    new Promise((resolve) => {
+      new Compressor(file, {
+        quality: 0.8, // Adjust the quality as needed (0 to 1)
+        success(result) {
+          resolve(result);
+        },
+        error(err) {
+          console.error(err.message);
+          resolve(file); // Resolve with the original file in case of an error
+        },
+      });
+    });
+
 
   return (
     <>
       <div
         style={{
           display: "flex",
-          "align-items": "center",
-          "justify-content": "center",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <button onClick={handleLogout}>Logout</button>
@@ -203,14 +248,12 @@ const ImageUpload = () => {
             <input
               style={{ margin: 20 }}
               type="file"
+              multiple
               onChange={async (event) => {
                 try {
-                  const file = event.target.files[0];
-                  const image = await resizeFile(file);
-                  compressImage(image)
-                  // console.log(file)
-                  // console.log(image);
-                  // setImageUpload(compressedImage);
+                  const files = event.target.files;
+                  const resizedAndCompressedFiles = await processImages(files);
+                  setImageUpload(resizedAndCompressedFiles);
                 } catch (err) {
                   console.log(err);
                 }
@@ -234,7 +277,7 @@ const ImageUpload = () => {
 
               alignSelf: "center",
             }}
-            onClick={uploadFile}
+            onClick={uploadFiles}
           >
             Upload Image
           </Button>
