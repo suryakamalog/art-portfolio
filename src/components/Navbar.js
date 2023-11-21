@@ -59,7 +59,7 @@ const Navbar = () => {
                 aria-current="page"
                 end
               >
-                Potraits
+                Portraits
               </NavLink>
             </li>
             <li className="nav-item">

@@ -13,7 +13,7 @@ const Potraits = () => {
           fontFamily: "BlinkMacSystemFont",
         }}
       >
-        Potraits
+        Portrait
       </Typography>
       <ImageGallery pageType={"potrait"}/>
     </>

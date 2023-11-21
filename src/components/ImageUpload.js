@@ -348,7 +348,7 @@ const ImageUpload = () => {
           fontFamily: "BlinkMacSystemFont",
         }}
       >
-        Potrait
+        Portrait
       </Typography>
       <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
         {potraitUrls.map((url, index) => {
