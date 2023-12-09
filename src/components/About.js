@@ -1,12 +1,15 @@
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import dummyImage from "../images/dummy.jpg";
+import profilePhoto from "../images/profilePhoto.jpeg";
 import { useMediaQuery } from "@mui/material";
 const About = () => {
-  const matches = useMediaQuery('(max-width:600px)');
+  const matches = useMediaQuery("(max-width:600px)");
   return (
     <>
-      <div style={{ minHeight: "90vh", width: "100%"}} className="align-items-center row">
+      <div
+        style={{ minHeight: "90vh", width: "100%" }}
+        className="align-items-center row"
+      >
         <div
           className="col-md-12"
           style={{
@@ -24,7 +27,10 @@ const About = () => {
               justifyContent: "center",
             }}
           >
-            <img src={dummyImage} style={{ height: matches ? "350px" : "550px" }} />
+            <img
+              src={profilePhoto}
+              style={{ height: matches ? "350px" : "550px" }}
+            />
           </div>
           <div
             className="col-md-6"
@@ -35,23 +41,29 @@ const About = () => {
               alignItems: "center",
             }}
           >
-            
             <Typography
               variant="h3"
               margin={5}
               marginRight={10}
               fontSize={35}
-              
               textAlign="center"
             >
-              Discover Utpal Abhishek, a versatile creator skilled in sketching, 
-              oil painting, and diverse artistic forms, capturing emotions uniquely.
+              Discover Utpal Abhishek, a versatile creator skilled in sketching,
+              oil painting, and diverse artistic forms, capturing emotions
+              uniquely.
             </Typography>
-            
 
             <Button
               variant="contained"
-              sx={{ backgroundColor: "#949083", width: "140px", alignSelf: "center" }}
+              sx={{
+                backgroundColor: "#949083",
+                width: "140px",
+                alignSelf: "center",
+                "&:hover": {
+                  backgroundColor: "#949083",
+                  color: "#fff",
+                },
+              }}
             >
               Get In Touch
             </Button>

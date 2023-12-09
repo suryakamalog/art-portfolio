@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import dummyImage from "../images/dummy.jpg";
+import profilePhoto from "../images/profilePhoto.jpeg";
 import { TextField, useMediaQuery } from "@mui/material";
 const Conatct = () => {
   const matches = useMediaQuery('(max-width:600px)');
@@ -24,7 +24,7 @@ const Conatct = () => {
               justifyContent: "center",
             }}
           >
-            <img src={dummyImage} style={{ height: matches ? "350px" : "550px" }} />
+            <img src={profilePhoto} style={{ height: matches ? "350px" : "550px" }} />
           </div>
           <div className="col-md-6" style={{
                 display: "flex",
@@ -94,6 +94,10 @@ const Conatct = () => {
                   backgroundColor: "#949083",
                   width: "140px",
                   alignSelf: "center",
+                  '&:hover': {
+                    backgroundColor: '#949083',
+                    color: '#fff',
+                },
                 }}
               >
                 Submit
