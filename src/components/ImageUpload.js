@@ -15,6 +15,7 @@ import Resizer from "react-image-file-resizer";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, IconButton } from "@mui/material";
 import Compressor from 'compressorjs';
+import watermark from 'watermarkjs';
 
 
 const resizeFile = (file) =>
@@ -166,14 +167,60 @@ const ImageUpload = () => {
   };
 
   const processImages = async (files) => {
-    const resizedAndCompressedPromises = Array.from(files).map(async (file) => {
-      const resizedFile = await resizeFile(file);
+    const processedPromises = Array.from(files).map(async (file) => {
+      const watermarkedFile = await addWatermark(file);
+      const resizedFile = await resizeFile(watermarkedFile);
       const compressedFile = await compressImage(resizedFile);
       return compressedFile;
     });
-
-    return Promise.all(resizedAndCompressedPromises);
+  
+    return Promise.all(processedPromises);
   };
+
+  function imgTagToFile(imgElement, fileName, mimeType) {
+    return new Promise((resolve) => {
+      // Create a canvas element
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+  
+      // Set canvas dimensions to match the image
+      canvas.width = imgElement.width;
+      canvas.height = imgElement.height;
+  
+      // Draw the image onto the canvas
+      context.drawImage(imgElement, 0, 0);
+  
+      // Convert canvas content to Blob
+      canvas.toBlob(
+        (blob) => {
+          // Create a File from the Blob
+          const fileOptions = { type: mimeType };
+          const file = new File([blob], fileName, fileOptions);
+  
+          // Resolve with the created File object
+          resolve(file);
+        },
+        mimeType,
+        1 // Image quality (1 is maximum)
+      );
+    });
+  }
+ 
+  const addWatermark = (file) =>
+  new Promise((resolve) => {
+    watermark([file])
+      .image(watermark.text.center('Utpal Abhishek', '300px Arial', '#ffffff', 0.5))
+      .then((img) => {
+        const myFileName = 'example.jpg';
+        const myMimeType = 'image/jpeg';
+
+        imgTagToFile(img, myFileName, myMimeType).then((file) => {
+          // Now 'file' is a File object that you can use as needed
+          resolve(file);
+        });
+        
+      });
+  });
 
   const resizeFile = (file) =>
     new Promise((resolve) => {
