@@ -56,7 +56,7 @@ const About = () => {
               oil painting, and diverse artistic forms, capturing emotions
               uniquely.
             </Typography>
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => window.open("https://wa.me/919155578473")}>
               <LocalPhoneIcon sx={{ marginRight: 1 }} />
               +91-9155578473
             </IconButton>

@@ -102,7 +102,7 @@ const CustomImageListItemBar = ({
       <Typography variant="body2" sx={{ fontSize: 18, marginBottom: 1 }}>
         {subtitle4}
       </Typography>
-      <IconButton onClick={() => {}}>
+      <IconButton onClick={() => window.open("https://wa.me/919155578473")}>
               <ShoppingBagIcon sx={{ marginRight: 1 }} />
               Contact
             </IconButton>
