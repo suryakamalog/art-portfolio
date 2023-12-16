@@ -2,6 +2,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import profilePhoto from "../images/profilePhoto.jpeg";
 import { useMediaQuery } from "@mui/material";
+import { IconButton } from "@mui/material";
+import EmailIcon from "@mui/icons-material/Email";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 const About = () => {
   const matches = useMediaQuery("(max-width:600px)");
   return (
@@ -42,7 +46,7 @@ const About = () => {
             }}
           >
             <Typography
-              variant="h3"
+              variant="h2"
               margin={5}
               marginRight={10}
               fontSize={35}
@@ -52,21 +56,22 @@ const About = () => {
               oil painting, and diverse artistic forms, capturing emotions
               uniquely.
             </Typography>
-
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#949083",
-                width: "140px",
-                alignSelf: "center",
-                "&:hover": {
-                  backgroundColor: "#949083",
-                  color: "#fff",
-                },
-              }}
+            <IconButton onClick={() => {}}>
+              <LocalPhoneIcon sx={{ marginRight: 1 }} />
+              +91-9155578473
+            </IconButton>
+            <IconButton
+              onClick={() =>
+                window.open("https://www.instagram.com/abhishekutpal.artpage")
+              }
             >
-              Get In Touch
-            </Button>
+              <InstagramIcon sx={{  marginRight: 1 }} />
+              abhishekutpal.artpage
+            </IconButton>
+            <IconButton onClick={() => {}}>
+              <EmailIcon sx={{  marginRight: 1 }} />
+              utpalabhishekexog@gmail.com
+            </IconButton>
           </div>
         </div>
       </div>

@@ -76,6 +76,18 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <NavLink
+                to="/marketplace"
+                className={({ isActive }) =>
+                  isActive ? "nav-link active" : "nav-link"
+                }
+                aria-current="page"
+                end
+              >
+                Marketplace
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
                 to="/about"
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
@@ -86,24 +98,12 @@ const Navbar = () => {
                 About
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink
-                to="/contact"
-                className={({ isActive }) =>
-                  isActive ? "nav-link active" : "nav-link"
-                }
-                aria-current="page"
-                end
-              >
-                Contact
-              </NavLink>
-            </li>
           </ul>
         </div>
         <div>
           <IconButton
             sx={instagramLogoStyle}
-            onClick={() => window.open("https://www.instagram.com/utpal.ogs/")}
+            onClick={() => window.open("https://www.instagram.com/abhishekutpal.artpage")}
           >
             <InstagramIcon />
           </IconButton>

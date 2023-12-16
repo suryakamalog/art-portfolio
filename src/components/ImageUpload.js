@@ -17,33 +17,16 @@ import { Box, IconButton } from "@mui/material";
 import Compressor from 'compressorjs';
 import watermark from 'watermarkjs';
 
-
-const resizeFile = (file) =>
-  new Promise((resolve) => {
-    Resizer.imageFileResizer(
-      file,
-      1500,
-      1500,
-      "JPEG",
-      100,
-      0,
-      (uri) => {
-        resolve(uri);
-      },
-      "file"
-    );
-  });
-
 const ImageUpload = () => {
   const [imageUpload, setImageUpload] = useState([]);
   const [imageType, setImageType] = useState("painting");
   const [paintingUrls, setPaintingUrls] = useState([]);
   const [photographyUrls, setPhotographyUrls] = useState([]);
   const [potraitUrls, setPotraitUrls] = useState([]);
-
   const paintingListRef = ref(storage, "images/painting");
   const photographyListRef = ref(storage, "images/photography");
   const potraitListRef = ref(storage, "images/potrait");
+
   useEffect(() => {
     listAll(paintingListRef).then((response) => {
       response.items.forEach((item) => {
@@ -215,7 +198,6 @@ const ImageUpload = () => {
         const myMimeType = 'image/jpeg';
 
         imgTagToFile(img, myFileName, myMimeType).then((file) => {
-          // Now 'file' is a File object that you can use as needed
           resolve(file);
         });
         
