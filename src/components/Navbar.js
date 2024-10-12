@@ -103,7 +103,7 @@ const Navbar = () => {
         <div>
           <IconButton
             sx={instagramLogoStyle}
-            onClick={() => window.open("https://www.instagram.com/abhishekutpal.artpage")}
+            onClick={() => window.open("https://www.instagram.com/utpalabhish_ek.501")}
           >
             <InstagramIcon />
           </IconButton>

@@ -1,3 +1,3 @@
 # Art Portfolio
 
-Art portfolio website created in React and Firebase.
+Art portfolio website created with React and Firebase.

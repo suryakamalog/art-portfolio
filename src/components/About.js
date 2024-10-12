@@ -1,8 +1,6 @@
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import profilePhoto from "../images/profilePhoto.jpeg";
 import { useMediaQuery } from "@mui/material";
-import { IconButton } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
@@ -56,22 +54,36 @@ const About = () => {
               oil painting, and diverse artistic forms, capturing emotions
               uniquely.
             </Typography>
-            <IconButton onClick={() => window.open("https://wa.me/919155578473")}>
-              <LocalPhoneIcon sx={{ marginRight: 1 }} />
-              +91-9155578473
-            </IconButton>
-            <IconButton
-              onClick={() =>
-                window.open("https://www.instagram.com/abhishekutpal.artpage")
-              }
-            >
-              <InstagramIcon sx={{  marginRight: 1 }} />
-              abhishekutpal.artpage
-            </IconButton>
-            <IconButton onClick={() => {}}>
-              <EmailIcon sx={{  marginRight: 1 }} />
+
+            <div style={{ margin: 10 }}>
+              <LocalPhoneIcon style={{ marginRight: 10 }}/>
+              <a
+                href="https://wa.me/919155578473"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none", color: "grey" }}
+              >
+                +91-9155578473
+              </a>
+            </div>
+
+            <div style={{ margin: 10 }}>
+              <InstagramIcon style={{ marginRight: 10 }}/>
+
+              <a
+                href="https://www.instagram.com/utpalabhish_ek.501"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none", color: "grey" }}
+              >
+                utpalabhish_ek.501
+              </a>
+            </div>
+
+            <div style={{ margin: 10, color: "grey" }}>
+              <EmailIcon style={{ marginRight: 10, color: "black" }} />
               utpalabhishekexog@gmail.com
-            </IconButton>
+            </div>
           </div>
         </div>
       </div>
